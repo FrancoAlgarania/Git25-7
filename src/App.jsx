@@ -1,27 +1,47 @@
 // Crear repositorio // hacer app simple usando api// hacer un lindo css // 
-import React from 'react'
-import { useState } from 'react'
-import axios from 'axios'
-import { useEffect } from 'react'
+// src/App.js
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import APIKEY from './utils/APIKEY/apikey';
+import './App.css';
 
 const App = () => {
-    cosnt [team , setTeam] = useState ([]);
+  const [matches, setMatches] = useState([]);
 
-    useEffect(() => {
-        axios.get ('http://apiclient.besoccerapps.com/scripts/api/api.php?key={{APIKEY}}&tz=Europe/Madrid&format=json&req=teams&league=1')
-        .then(response => setTeams(response.data))
-        .catch(error => console.error('Error ', error));
-    }, []);
+  useEffect(() => {
+    const fetchMatches = async () => {
+      try {
+        const response = await axios.get('https://v3.football.api-sports.io/fixtures', {
+          headers: {
+            'x-rapidapi-key': APIKEY,
+            'x-rapidapi-host': 'v3.football.api-sports.io',
+          },
+          params: {
+            league: '128', 
+            season: '2023', 
+          },
+        });
+        setMatches(response.data.response.slice(0, 4)); // Obténer solo 1ros 4 partidos
+      } catch (error) {
+        console.error('Error fetching data: ', error);
+      }
+    };
+
+    fetchMatches();
+  }, []);
+
   return (
-    <div>
-      <h2>Teams</h2>
+    <div className="container-partidos">
+      <h2>Partidos de la Copa de la Liga Profesional</h2>
       <ul>
-        {teams.map(team =>(
-            <li key={team.id}>{team.name}</li>
+        {matches.map((match) => (
+          <li key={match.fixture.id} className='partidos'>
+            {match.teams.home.name} vs {match.teams.away.name} 
+          </li>
         ))}
       </ul>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
