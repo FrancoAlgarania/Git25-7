@@ -17,11 +17,15 @@ const App = () => {
             'x-rapidapi-host': 'v3.football.api-sports.io',
           },
           params: {
-            league: '128', 
-            season: '2023', 
+            league: '128', // ID de la Copa de la Liga Profesional
+            season: '2023', // Temporada actual
           },
         });
-        setMatches(response.data.response.slice(0, 4)); // Obténer solo 1ros 4 partidos
+
+        // Verifica la estructura de los datos devueltos
+        console.log(response.data.response);
+
+        setMatches(response.data.response.slice(0, 4)); // Limita a los primeros 4 partidos
       } catch (error) {
         console.error('Error fetching data: ', error);
       }
@@ -31,15 +35,24 @@ const App = () => {
   }, []);
 
   return (
-    <div className="container-partidos">
+    <div className="app">
       <h2>Partidos de la Copa de la Liga Profesional</h2>
-      <ul>
+      <div className="matches">
         {matches.map((match) => (
-          <li key={match.fixture.id} className='partidos'>
-            {match.teams.home.name} vs {match.teams.away.name} 
-          </li>
+          <div className="match-card" key={match.fixture.id}>
+            <div className="team">
+              <img src={match.teams.home.logo} alt={`${match.teams.home.name} logo`} width="50" height="50" />
+              <span>{match.teams.home.name}</span>
+            </div>
+            <div className="versus">vs</div>
+            <div className="team">
+              <img src={match.teams.away.logo} alt={`${match.teams.away.name} logo`} width="50" height="50" />
+              <span>{match.teams.away.name}</span>
+            </div>
+          
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };
