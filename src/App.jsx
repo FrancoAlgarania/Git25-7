@@ -7,6 +7,7 @@ import './App.css';
 
 const App = () => {
   const [matches, setMatches] = useState([]);
+  const [showResult, setShowResult] = useState ({})
 
   useEffect(() => {
     const fetchMatches = async () => {
@@ -19,6 +20,7 @@ const App = () => {
           params: {
             league: '128', // ID de la Copa de la Liga Profesional
             season: '2023', // Temporada actual
+            status: 'FT'
           },
         });
 
@@ -33,6 +35,10 @@ const App = () => {
 
     fetchMatches();
   }, []);
+
+  const handleResult = (id) => {
+    setShowResult (prev =>({...prev, [id] : !prev[id]}))
+  }
 
   return (
     <div className="app">
@@ -49,7 +55,12 @@ const App = () => {
               <img src={match.teams.away.logo} alt={`${match.teams.away.name} logo`} width="50" height="50" />
               <span>{match.teams.away.name}</span>
             </div>
-          
+            <button className='button' onClick={() => handleResult(match.fixture.id)}>Ver Resultado</button> 
+            {showResult[match.fixture.id] && ( 
+              <div className="result"> 
+                <p>{match.goals.home} - {match.goals.away}</p> 
+              </div> 
+            )} 
           </div>
         ))}
       </div>

@@ -1,4 +1,6 @@
 body {
+  display: flex;
+  justify-content: center;
   background-image: url('/fondo.png');
   background-size: cover; /* Asegura que la imagen cubra todo el fondo */
   background-position: center; /* Centra la imagen en el fondo */
@@ -46,10 +48,22 @@ h2 {
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex-grow: 1;
 }
 
 .versus {
   margin: 10px 0;
   font-size: 18px;
   font-weight: bold;
+}
+
+.button{
+  margin-top: auto; 
+  padding: 10px 20px;
+  background-color: #6e88a3;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
 }
