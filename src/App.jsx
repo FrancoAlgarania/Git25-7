@@ -40,6 +40,16 @@ const App = () => {
     setShowResult (prev =>({...prev, [id] : !prev[id]}))
   }
 
+const showWinner = (match) =>{
+if (match.goals.home > match.goals.away){
+  return match.teams.home.name;
+}else if(match.goals.home < match.goals.away){ 
+  return match.teams.away.name;
+}else {
+  return 'Empate'
+}
+}
+
   return (
     <div className="app">
       <h2>Partidos de la Copa de la Liga Profesional</h2>
@@ -55,10 +65,11 @@ const App = () => {
               <img src={match.teams.away.logo} alt={`${match.teams.away.name} logo`} width="50" height="50" />
               <span>{match.teams.away.name}</span>
             </div>
-            <button className='button' onClick={() => handleResult(match.fixture.id)}>Ver Resultado</button> 
+            <button className='button' onClick={() => handleResult(match.fixture.id)}>Simular partido</button> 
             {showResult[match.fixture.id] && ( 
               <div className="result"> 
                 <p>{match.goals.home} - {match.goals.away}</p> 
+                <p>{showWinner(match)} </p>
               </div> 
             )} 
           </div>
